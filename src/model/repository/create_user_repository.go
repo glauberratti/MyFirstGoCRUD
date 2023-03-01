@@ -9,14 +9,11 @@ import (
 	"github.com/glauberratti/MyFirstGoCRUD/src/model"
 	"github.com/glauberratti/MyFirstGoCRUD/src/model/repository/entity/converter"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-)
-
-const (
-	MONGODB_USER_COLLECTION = "MONGODB_USER_COLLECTION"
+	"go.uber.org/zap"
 )
 
 func (ur *userRepository) CreateUser(userDomain model.UserDomainInterface) (model.UserDomainInterface, *rest_err.RestErr) {
-	logger.Info("Init createUser repository")
+	logger.Info("Init createUser repository", zap.String("jorney", "createUser"))
 	collection_name := os.Getenv(MONGODB_USER_COLLECTION)
 
 	collection := ur.databaseConnection.Collection(collection_name)

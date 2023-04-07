@@ -8,7 +8,7 @@ import (
 )
 
 func (ud *userDomainService) UpdateUser(id string, userDomain model.UserDomainInterface) *rest_err.RestErr {
-	logger.Info("Init updateUser model", zap.String("jorney", "updateUser"))
+	logger.Info("Init UpdateUser model", zap.String("jorney", "updateUser"))
 
 	err := ud.userRepository.UpdateUser(id, userDomain)
 	if err != nil {

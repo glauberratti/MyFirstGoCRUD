@@ -1,0 +1,13 @@
+version: '3.1'
+
+services:
+
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      ENV: dsv
+      MONGODB_URL: mongodb://localhost:27017
+      MONGODB_DB: MyFirstGoCRUD
+      MONGODB_USER_COLLECTION: users

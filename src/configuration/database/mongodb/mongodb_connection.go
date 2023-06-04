@@ -23,7 +23,8 @@ func NewMongoDBConnection(ctx context.Context) (*mongo.Database, error) {
 	}
 
 	if err := client.Ping(ctx, nil); err != nil {
-		return nil, err
+		logger.Error("Erro ao tentar se conectar com o banco de dados", err)
+		panic("")
 	}
 
 	client.Database(dbName)

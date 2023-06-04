@@ -14,6 +14,7 @@ func main() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
+		return
 	}
 
 	database, err := mongodb.NewMongoDBConnection(context.Background())
@@ -28,5 +29,6 @@ func main() {
 	routes.InitRoutes(&router.RouterGroup, userController)
 	if err := router.Run(":5000"); err != nil {
 		log.Fatal(err)
+		return
 	}
 }

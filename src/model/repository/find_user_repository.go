@@ -85,3 +85,41 @@ func (ur *userRepository) FindUserById(id string) (model.UserDomainInterface, *r
 	)
 	return converter.ConvertEntityToDomain(*userEntity), nil
 }
+
+func (ur *userRepository) FindUserByEmailAndPassword(email string, password string) (model.UserDomainInterface, *rest_err.RestErr) {
+	logger.Info("Init findUserByEmailAndPassword repository", zap.String("jorney", "findUserByEmailAndPassword"))
+	collection_name := os.Getenv(MONGODB_USER_COLLECTION)
+
+	collection := ur.databaseConnection.Collection(collection_name)
+
+	userEntity := &entity.UserEntity{}
+
+	filter := bson.D{
+		{Key: "email", Value: email},
+		{Key: "password", Value: password},
+	}
+	err := collection.FindOne(
+		context.Background(),
+		filter,
+	).Decode(userEntity)
+
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			errorMessage := "User or password is invalid"
+			logger.Error(errorMessage, err, zap.String("jorney", "findUserByEmailAndPassword"))
+			return nil, rest_err.NewForbiddenError(errorMessage)
+		}
+
+		errorMessage := fmt.Sprintf("Error trying to find user by email and password")
+		logger.Error(errorMessage, err, zap.String("jorney", "findUserByEmailAndPassword"))
+		return nil, rest_err.NewInternalServerError(errorMessage)
+	}
+
+	logger.Info(
+		"FindUserByEmail repository executed successfully",
+		zap.String("jorney", "findUserByEmailAndPassword"),
+		zap.String("email", email),
+		zap.String("userId", userEntity.Id.Hex()),
+	)
+	return converter.ConvertEntityToDomain(*userEntity), nil
+}

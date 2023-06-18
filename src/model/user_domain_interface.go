@@ -1,5 +1,7 @@
 package model
 
+import "github.com/glauberratti/MyFirstGoCRUD/src/configuration/rest_err"
+
 type UserDomainInterface interface {
 	GetEmail() string
 	GetPassword() string
@@ -8,6 +10,7 @@ type UserDomainInterface interface {
 	EncryptPassword()
 	SetId(string)
 	GetId() string
+	GenerateToken() (string, *rest_err.RestErr)
 }
 
 func NewUserDomain(email string, password string, name string, age int8) UserDomainInterface {
